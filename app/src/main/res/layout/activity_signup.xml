@@ -32,6 +32,7 @@
         android:layout_marginBottom="5sp"
         android:ems="10"
         android:hint="User_Id"
+        android:text=""
         android:inputType="textPersonName" />
 
 
@@ -53,6 +54,7 @@
         android:layout_marginBottom="5sp"
         android:ems="10"
         android:hint="User_password"
+        android:text=""
         android:inputType="textPassword" />
 
     <TextView
@@ -74,6 +76,7 @@
         android:layout_marginBottom="5sp"
         android:ems="10"
         android:hint="Check_password"
+        android:text=""
         android:inputType="textPassword" />
 
     <TextView
@@ -115,8 +118,9 @@
         android:ems="10"
         android:layout_marginTop="5sp"
         android:layout_marginBottom="5sp"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:hint="User_age"
+        android:text=""
         />
 
 
