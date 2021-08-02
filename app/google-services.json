@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "925690315445",
+    "project_id": "talking-app-5b2ef",
+    "storage_bucket": "talking-app-5b2ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925690315445:android:cf8b1e0ea0a7292c2574fc",
+        "android_client_info": {
+          "package_name": "com.example.chattingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925690315445-nvi87m57u4716ffjigvable0bb9mn6bh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcHlhfV6zAbWqlUZToJ7ogk6DdUju-pVU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925690315445-nvi87m57u4716ffjigvable0bb9mn6bh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

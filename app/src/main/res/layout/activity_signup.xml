@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:layout_marginBottom="6sp"
+    android:weightSum="10"
+    android:windowActionBar="false"
+    tools:context="com.example.chattingapp.SignupActivity">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="아이디"
+        android:textColor="#2196F3"
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/edit_Id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:ems="10"
+        android:hint="User_Id"
+        android:inputType="textPersonName" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="패스워드"
+        android:textColor="#2196F3"
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/edit_Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:ems="10"
+        android:hint="User_password"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/textView_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="패스워드 확인"
+        android:textColor="#2196F3"
+
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/edit_PasswordCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:ems="10"
+        android:hint="Check_password"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="이름"
+        android:textColor="#2196F3"
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/edit_Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:layout_gravity="center"
+        android:ems="10"
+
+        android:inputType="textPersonName"
+        android:hint="User_name"
+        />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="나이"
+        android:textColor="#2196F3"
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/edit_Age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ems="10"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:inputType="textPersonName"
+        android:hint="User_age"
+        />
+
+
+    <TableLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+            <CheckBox
+                android:text="본인의 신상에 해킹당하는 것에 관련하여 동의합니다"
+                android:id="@+id/cb_btn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checked"/>
+            <CheckBox
+                android:text="당신의 개인정보는 제가 가져가는 것에 동의합니다"
+                android:id="@+id/cb_btn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="checked"/>
+    </TableLayout>
+    <LinearLayout
+        android:id="@+id/Forget_Signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:weightSum="10"
+        android:clickable="true"
+        >
+
+        <Button
+            android:id="@+id/Agree_btn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="5"
+            android:text="Agree" />
+
+        <Button
+            android:id="@+id/Disagree_btn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="5"
+            android:text="Disagree" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/btn_picture1"
+        />
+    <ImageView
+        android:src ="@drawable/input_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/signupActivity_imageview_profile"
+        />
+    </LinearLayout>
+</LinearLayout>
+

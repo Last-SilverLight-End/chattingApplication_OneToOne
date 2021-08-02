@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:layout_marginBottom="16sp"
+    android:windowActionBar="false"
+    tools:context="com.example.chattingapp.LoginActivity"
+
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_marginBottom="16sp"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/holo_blue_dark"
+        android:text ="LoginMenu">
+
+    </TextView>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="137dp"
+        android:layout_gravity="top|center"
+        android:background="@null"
+        android:layout_marginBottom="16sp"
+        android:src="@drawable/login_photo" >
+        </ImageView>
+
+    <!-- 이메일과 비번 입력 칸 -->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="16sp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Id"
+            android:id="@+id/loginActivity_EditText_Id"
+            >
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="16sp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:id="@+id/loginActivity_EditText_Password"
+            >
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 아래 버튼들  -->
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/bin_cyan"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_marginBottom="16sp"
+        android:clickable="true"
+        android:weightSum="1"
+        android:focusable="true"> -->
+
+    <LinearLayout
+        android:id="@+id/LinearLayout_login"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/bin_cyan"
+        android:paddingLeft="12dp"
+        android:paddingRight="42dp"
+        android:weightSum="1"
+        android:layout_marginBottom="16sp"
+        android:paddingStart="12dp"
+        android:clickable="true"
+        android:paddingEnd="42dp">
+
+       <ImageView
+           android:layout_width="30dp"
+           android:layout_height="30dp"
+           android:background="@null"
+           android:src="@drawable/btn_picture2"
+           android:layout_gravity="center"
+           >
+
+       </ImageView>
+
+       <TextView
+           android:layout_width="0dp"
+           android:layout_height="50dp"
+           android:textColor="#ffffff"
+           android:stateListAnimator="@null"
+           android:layout_gravity="center"
+           android:gravity="center"
+           android:layout_weight="1"
+           android:text="Log in"
+           >
+
+       </TextView>
+
+    </LinearLayout>
+
+
+    <!-- 버튼 사이에 껴 있는 or -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#9C27B0"
+        android:textSize="20sp"
+        android:layout_marginBottom="16sp"
+        android:text="OR">
+
+    </TextView>
+
+    <!-- 로그인 페북으로 -->
+
+    <LinearLayout
+    android:id="@+id/LinearLayout_signup"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:background="@drawable/bin_blue"
+    android:paddingLeft="12dp"
+    android:paddingRight="42dp"
+        android:clickable="true"
+    android:weightSum="1"
+    >
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@null"
+        android:src="@drawable/btn_picture3"
+        android:layout_gravity="center"
+        >
+
+    </ImageView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColor="#ffffff"
+        android:stateListAnimator="@null"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:text="Sign Up">
+
+    </TextView>
+
+    </LinearLayout>
+
+
+
+    <!-- 만약 잊어버렷다면? 밑의 버튼들
+
+        <LinearLayout
+        android:id="@+id/Forget_Singup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:weightSum="10"
+        android:clickable="true"
+            >
+
+    </LinearLayout>-->
+
+
+</LinearLayout>
