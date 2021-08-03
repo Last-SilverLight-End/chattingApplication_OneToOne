@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
  //       });
     }
     void loginEvent(){
-        firebaseAuth.signInWithEmailAndPassword(Id.getText().toString(),Password.getText().toString())
+        firebaseAuth.signInWithEmailAndPassword(Id.getText().toString(),Password.getText().toString().trim())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
