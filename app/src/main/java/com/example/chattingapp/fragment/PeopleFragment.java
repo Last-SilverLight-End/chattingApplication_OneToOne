@@ -1,5 +1,6 @@
 package com.example.chattingapp.fragment;
 
+import android.app.ActivityOptions;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.chattingapp.R;
 import com.example.chattingapp.SignupActivity;
+import com.example.chattingapp.chat.MessageActivity;
 import com.example.chattingapp.model.UserModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,8 +34,6 @@ import java.util.List;
 // 호출이 안되고 있으므로 MainActivity 에서 호출 해야 한다 말 그대로 frag 이기 때문에 가져와야 한다
 public class PeopleFragment extends Fragment {
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
@@ -47,7 +47,6 @@ public class PeopleFragment extends Fragment {
     class PeopleFragRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         @NonNull @NotNull
         List<UserModel> userModels;
-
 
         public PeopleFragRecyclerViewAdapter(){
             userModels = new ArrayList<>();
@@ -83,6 +82,18 @@ public class PeopleFragment extends Fragment {
                     .apply(new RequestOptions().circleCrop())
                     .into(((CustomViewHolder)holder).imageView);
             ((CustomViewHolder)holder).textView.setText(userModels.get(position).userName);
+
+            //이미지 텍스트 상위 부분에서 메세지를 단다
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), MessageActivity.class);
+                    ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(),R.anim.fromright,R.anim.toleft);
+                    startActivity(intent,activityOptions.toBundle());
+
+                }
+            });
+
         }
 
         @Override

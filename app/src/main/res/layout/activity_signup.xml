@@ -133,13 +133,13 @@
                 android:id="@+id/cb_btn1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="checked"/>
+                />
             <CheckBox
                 android:text="당신의 개인정보는 제가 가져가는 것에 동의합니다"
                 android:id="@+id/cb_btn2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="checked"/>
+                />
     </TableLayout>
     <LinearLayout
         android:id="@+id/Forget_Signup"
