@@ -22,17 +22,21 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.chattingapp.model.UserModel;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -92,6 +96,7 @@ public class SignupActivity extends AppCompatActivity {
         Profile = (ImageView)findViewById(R.id.signupActivity_imageview_profile);
         CheckBox1 = (CheckBox)findViewById(R.id.cb_btn1);
         CheckBox2 = (CheckBox)findViewById(R.id.cb_btn2);
+
 
         Profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,38 +163,66 @@ public class SignupActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        // 위의 입력하는 정보들 가져오는거 성공하면 파베에서 입력 하고
                                         final String uid = task.getResult().getUser().getUid();
+                                        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference().child("UserImage").child(uid);
 
-                                                FirebaseStorage.getInstance().getReference().child("UserImage").child(uid).putFile(imageUri)
-                                                    .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NotNull Task<UploadTask.TaskSnapshot> task) {
-                                                        //@SuppressWarnings("VisibleForTests")
-                                                    String imgUri = task.getResult().getUploadSessionUri().toString();
-                                                    UserModel userModel = new UserModel();
-                                                    userModel.userName = Name_string;
-                                                    userModel.userAge = Age_string;
-                                                    userModel.ProfileImageUri = imgUri;
-                                                    FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(userModel)
-                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void unused) {
-                                                               Intent intent = new Intent(SignupActivity.this,LoginActivity.class);
-                                                               startActivity(intent);
-                                                               Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
-                                                               finish();
-                                                            }
-                                                        });
-
-                                                    }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull @NotNull Exception e) {
-                                                        Toast.makeText(getApplicationContext(), "error Occured! plz call to chang-geun", Toast.LENGTH_LONG).show();
+                                        profileImageRef.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                            @Override
+                                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                                if (!task.isSuccessful()) {
+                                                    throw task.getException();
                                                 }
-                                            });
-                                        }
+                                                return profileImageRef.getDownloadUrl();
+                                            }
+                                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Uri> task) {
+                                                if (task.isSuccessful()) {
+                                                    // 위의 입력하는 정보들 가져오는거 성공하면 파베에서 입력 하고
+                                                    FirebaseStorage.getInstance().getReference().child("UserImage").child(uid).putFile(imageUri)
+                                                            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NotNull Task<UploadTask.TaskSnapshot> task) {
+                                                                    //@SuppressWarnings("VisibleForTests")
+                                                                    //String imgUri = task.getResult().getUploadSessionUri().toString();
+                                                                    Task<Uri> uriTask = profileImageRef.getDownloadUrl();
+                                                                    while (!uriTask.isSuccessful())
+                                                                        ;
+                                                                    Uri downloadUri = uriTask.getResult();
+                                                                    String imgUri = String.valueOf(downloadUri);
+
+                                                                    UserModel userModel = new UserModel();
+                                                                    userModel.userName = Name_string;
+                                                                    userModel.userAge = Age_string;
+                                                                    userModel.ProfileImageUri = imgUri;
+                                                                    userModel.uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                                                                    FirebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(userModel)
+                                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void aVoid) {
+                                                                                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                                                                                    startActivity(intent);
+                                                                                    Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                                                                                    finish();
+                                                                                }
+                                                                            });
+                                                                }
+                                                            }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull @NotNull Exception e) {
+                                                            Toast.makeText(getApplicationContext(), "error Occured! plz call to chang-geun", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+                                                }
+                                                else
+                                                {
+                                                    Toast.makeText(getApplicationContext(), "error Occured! plz call to chang-geun", Toast.LENGTH_LONG).show();
+
+                                                }
+                                            }
+                                        });
+                                    }
                                     else {      // 로그인 할때의 예외 처리 부분
 
                                         String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();

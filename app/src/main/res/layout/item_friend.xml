@@ -2,33 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="80dp">
+    android:layout_height="200dp">
+
     <LinearLayout
-        android:layout_margin="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="174dp"
+        android:layout_margin="8dp"
         android:orientation="horizontal">
-    <ImageView
-        android:layout_marginRight="10dp"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:id="@+id/image_Friend"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView_Friend"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:textSize="20sp"
-        android:text="아이디"
-        />
+
+        <ImageView
+            android:id="@+id/image_Friend"
+            android:layout_width="197dp"
+            android:layout_height="155dp"
+            android:layout_marginRight="10dp" />
+
+        <TextView
+            android:id="@+id/textView_Friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="아이디"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:background="@android:color/darker_gray"
         android:layout_width="match_parent"
-        android:layout_height="1sp">
+        android:layout_height="1sp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/darker_gray"
+        android:gravity="bottom">
 
     </LinearLayout>
 

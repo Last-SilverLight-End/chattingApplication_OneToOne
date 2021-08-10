@@ -1,7 +1,11 @@
 package com.example.chattingapp.fragment;
 
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.chattingapp.MainActivity;
 import com.example.chattingapp.R;
 import com.example.chattingapp.SignupActivity;
 import com.example.chattingapp.chat.MessageActivity;
 import com.example.chattingapp.model.UserModel;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,45 +37,60 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static android.content.ContentValues.TAG;
 
 // 호출이 안되고 있으므로 MainActivity 에서 호출 해야 한다 말 그대로 frag 이기 때문에 가져와야 한다
 public class PeopleFragment extends Fragment {
-
+    final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private Context context;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.frag_people,container,false);
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.peopleFrag_recyclerview);
+        context = container.getContext();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
-        recyclerView.setAdapter(new PeopleFragRecyclerViewAdapter());
+        recyclerView.setAdapter(new PeopleFragmentRecyclerViewAdapter());
         return view;
     }
 
-    class PeopleFragRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-        @NonNull @NotNull
+    class PeopleFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> { //recyclerView 의 adapter
         List<UserModel> userModels;
 
-        public PeopleFragRecyclerViewAdapter(){
-            userModels = new ArrayList<>();
-            FirebaseDatabase.getInstance().getReference().child("Users").addValueEventListener(new ValueEventListener() {
-                @Override
-                // 서버에서 데이터 넘어욤
-                public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
-                    userModels.clear();
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        userModels.add(snapshot.getValue(UserModel.class));
-                    }
-                    notifyDataSetChanged();
+        public PeopleFragmentRecyclerViewAdapter() { //생성자
+            userModels = new ArrayList<>(); //유저목록 생성
 
+              //나의 uid
+
+            FirebaseDatabase.getInstance().getReference().child("Users").addValueEventListener(new ValueEventListener() {   //users의 이벤트 리스너 등록
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) { //데이터가 변했을때
+                    userModels.clear(); //목록 초기화
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) { //데이터를 가져와서
+
+                        UserModel userModel = snapshot.getValue(UserModel.class);
+                        Toast.makeText(context,userModel.uid,Toast.LENGTH_SHORT).show();
+
+
+
+                        if (myUid.equals(userModel.uid)) { ////내 아이디는 유저목록에서 제외
+                            continue;
+                        }
+                        userModels.add(userModel);  // 유저모델에 추가
+                    }
+                    notifyDataSetChanged(); //유저 목록 새로고침
                 }
 
                 @Override
-                public void onCancelled(@NotNull DatabaseError databaseError) {
-                 //  Toast.makeText(,"ErrorOccured",Toast.LENGTH_LONG).show();
-                    return;
+                public void onCancelled(DatabaseError databaseError) {
+
                 }
             });
         }
+
         @Override
         public RecyclerView.@NotNull ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend,parent,false);
@@ -77,18 +99,28 @@ public class PeopleFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
-            Glide.with(holder.itemView.getContext())
+            String pathUri = (userModels.get(position).ProfileImageUri);
+            Glide.with
+                    (holder.itemView.getContext())
                     .load(userModels.get(position).ProfileImageUri)
                     .apply(new RequestOptions().circleCrop())
                     .into(((CustomViewHolder)holder).imageView);
             ((CustomViewHolder)holder).textView.setText(userModels.get(position).userName);
 
-            //이미지 텍스트 상위 부분에서 메세지를 단다
+
+            ((CustomViewHolder)holder).textView.setText(userModels.get(position).userName);
+
+
+
+           // 이미지 텍스트 상위 부분에서 메세지를 단다
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), MessageActivity.class);
-                    ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(),R.anim.fromright,R.anim.toleft);
+                    intent.putExtra("destinationUid",userModels.get(position).uid);
+
+                    ActivityOptions activityOptions=null;
+                    activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(),R.anim.fromright,R.anim.toleft);
                     startActivity(intent,activityOptions.toBundle());
 
                 }

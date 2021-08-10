@@ -5,5 +5,6 @@ public class UserModel {
     public String ProfileImageUri;
     public String ID;
     public String userAge;
+    public String uid;
 }
  
