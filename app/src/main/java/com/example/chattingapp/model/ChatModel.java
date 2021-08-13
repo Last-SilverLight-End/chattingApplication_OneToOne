@@ -10,7 +10,8 @@ public  class ChatModel {
     public Map<String,Comment> comments = new HashMap<>(); //채팅방의 내용
 
     public static class Comment {
-        public String uid;
-        public String message;
+       public String uid;
+       public String destinationUid;
+       public String message;
     }
 }

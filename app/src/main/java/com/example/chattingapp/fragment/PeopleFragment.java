@@ -27,6 +27,7 @@ import com.example.chattingapp.R;
 import com.example.chattingapp.SignupActivity;
 import com.example.chattingapp.chat.MessageActivity;
 import com.example.chattingapp.model.UserModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,42 +45,43 @@ import static android.content.ContentValues.TAG;
 // 호출이 안되고 있으므로 MainActivity 에서 호출 해야 한다 말 그대로 frag 이기 때문에 가져와야 한다
 public class PeopleFragment extends Fragment {
     final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    List<UserModel> userModels;
     private Context context;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.frag_people,container,false);
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.peopleFrag_recyclerview);
-        context = container.getContext();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
-        recyclerView.setAdapter(new PeopleFragmentRecyclerViewAdapter());
+        recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));  //레이아웃 매니저 설정
+        recyclerView.setAdapter(new PeopleFragmentRecyclerViewAdapter());   //어뎁터 설정
+        //FloatingActionButton floatingActionButton = (FloatingActionButton)view.findViewById(R.id.peoplefragment_floatingButton);
         return view;
     }
 
     class PeopleFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> { //recyclerView 의 adapter
-        List<UserModel> userModels;
+
 
         public PeopleFragmentRecyclerViewAdapter() { //생성자
             userModels = new ArrayList<>(); //유저목록 생성
+            final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();  //나의 uid
 
-              //나의 uid
 
             FirebaseDatabase.getInstance().getReference().child("Users").addValueEventListener(new ValueEventListener() {   //users의 이벤트 리스너 등록
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) { //데이터가 변했을때
                     userModels.clear(); //목록 초기화
+
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) { //데이터를 가져와서
-
+                        String uidss = snapshot.getKey();
                         UserModel userModel = snapshot.getValue(UserModel.class);
-                        Toast.makeText(context,userModel.uid,Toast.LENGTH_SHORT).show();
-
-
-
-                        if (myUid.equals(userModel.uid)) { ////내 아이디는 유저목록에서 제외
+                        if(uidss.equals(myUid))
+                        {
                             continue;
                         }
-                        userModels.add(userModel);  // 유저모델에 추가
+                        else {
+                            userModels.add(userModel);  // 유저모델에 추가
+                        }
                     }
                     notifyDataSetChanged(); //유저 목록 새로고침
                 }
@@ -108,7 +110,7 @@ public class PeopleFragment extends Fragment {
             ((CustomViewHolder)holder).textView.setText(userModels.get(position).userName);
 
 
-            ((CustomViewHolder)holder).textView.setText(userModels.get(position).userName);
+
 
 
 
