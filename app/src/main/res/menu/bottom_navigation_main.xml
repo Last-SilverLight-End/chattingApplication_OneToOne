@@ -9,7 +9,7 @@
     <item
         android:id="@+id/Item_Chatting"
         android:icon="@drawable/baseline_chat_black_24"
-        android:title="Chatting">
+        android:title="Chat">
 
     </item>
     <item

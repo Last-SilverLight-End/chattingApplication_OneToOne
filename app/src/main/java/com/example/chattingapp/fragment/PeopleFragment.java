@@ -45,7 +45,7 @@ import static android.content.ContentValues.TAG;
 // 호출이 안되고 있으므로 MainActivity 에서 호출 해야 한다 말 그대로 frag 이기 때문에 가져와야 한다
 public class PeopleFragment extends Fragment {
     final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    List<UserModel> userModels;
+
     private Context context;
     @Nullable
     @Override
@@ -60,7 +60,7 @@ public class PeopleFragment extends Fragment {
     }
 
     class PeopleFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> { //recyclerView 의 adapter
-
+        List<UserModel> userModels;
 
         public PeopleFragmentRecyclerViewAdapter() { //생성자
             userModels = new ArrayList<>(); //유저목록 생성
@@ -73,9 +73,8 @@ public class PeopleFragment extends Fragment {
                     userModels.clear(); //목록 초기화
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) { //데이터를 가져와서
-                        String uidss = snapshot.getKey();
                         UserModel userModel = snapshot.getValue(UserModel.class);
-                        if(uidss.equals(myUid))
+                        if(userModel.uid.equals(myUid))
                         {
                             continue;
                         }

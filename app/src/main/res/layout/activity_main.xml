@@ -26,7 +26,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_above="@+id/bottom_NavigationView"
+        android:layout_above="@+id/mainactivity_bottomnavigationview"
         >
 
 
@@ -35,7 +35,7 @@
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_NavigationView"
+        android:id="@+id/mainactivity_bottomnavigationview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

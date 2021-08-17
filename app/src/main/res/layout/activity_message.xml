@@ -6,10 +6,10 @@
     tools:context = "com.example.chattingapp.chat.MessageActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/messageActivity2_recyclerview"
+        android:id="@+id/messageActivity_recyclerview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/messageActivity2_button"
+        android:layout_above="@+id/messageActivity_button"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
@@ -21,16 +21,16 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/messageActivity2_button"
+        android:layout_toLeftOf="@+id/messageActivity_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:id="@+id/messageActivity2_editText"
+        android:id="@+id/messageActivity_editText"
         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="send"
-        android:id="@+id/messageActivity2_button"
+        android:id="@+id/messageActivity_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         />
