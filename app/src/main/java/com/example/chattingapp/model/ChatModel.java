@@ -11,7 +11,7 @@ public  class ChatModel {
 
     public static class Comment {
        public String uid;
-       public String destinationUid;
+       public Object timestamp;
        public String message;
     }
 }

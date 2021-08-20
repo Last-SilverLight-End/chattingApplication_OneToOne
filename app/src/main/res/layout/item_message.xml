@@ -24,11 +24,22 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <TextView
-
+        android:text="메세지"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/messageItem_textview_message"/>
+        <TextView
+            android:text = "2011.11.11 11:11"
+            android:textSize="9sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/messageItem_textview_timestamp"/>
+    </LinearLayout>
 
 
 </LinearLayout>

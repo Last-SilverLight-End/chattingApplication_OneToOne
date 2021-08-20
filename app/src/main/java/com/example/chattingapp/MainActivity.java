@@ -21,7 +21,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.mainactivity_bottomnavigationview);
+
+
+
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 if (itemId == R.id.Item_People) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainActivity_FrameLayout, new PeopleFragment()).commit();
                     return true;
-                } else if (itemId == Item_Chatting) {
+                } else if (itemId == R.id.Item_Chatting) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainActivity_FrameLayout, new ChatFragment()).commit();
                     return true;
                 }
