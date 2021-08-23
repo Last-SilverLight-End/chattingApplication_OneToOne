@@ -28,6 +28,7 @@ import com.example.chattingapp.SignupActivity;
 import com.example.chattingapp.chat.MessageActivity;
 import com.example.chattingapp.model.UserModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.shape.CutCornerTreatment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -126,7 +127,11 @@ public class PeopleFragment extends Fragment {
 
                 }
             });
-
+            if(userModels.get(position).comment !=null) {
+                ((CustomViewHolder) holder).textView_comment.setText(userModels.get(position).comment);
+            }else{
+                ((CustomViewHolder) holder).textView_comment.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -137,11 +142,13 @@ public class PeopleFragment extends Fragment {
         private class CustomViewHolder extends  RecyclerView.ViewHolder{
             public TextView textView;
             public ImageView imageView;
+            public TextView  textView_comment;
 
             public CustomViewHolder(View view){
                 super(view);
                 imageView =(ImageView) view.findViewById(R.id.image_Friend);
                 textView =(TextView) view.findViewById(R.id.textView_Friend);
+                textView_comment = (TextView)view.findViewById(R.id.frienditem_textview_comment);
             }
         }
 

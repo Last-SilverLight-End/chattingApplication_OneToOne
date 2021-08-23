@@ -6,5 +6,6 @@ public class UserModel {
     public String ID;
     public String userAge;
     public String uid;
+    public String comment;
 }
  

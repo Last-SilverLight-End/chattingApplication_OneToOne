@@ -6,14 +6,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="174dp"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/image_Friend"
-            android:layout_width="197dp"
-            android:layout_height="155dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginRight="10dp" />
 
         <TextView
@@ -24,6 +24,17 @@
             android:layout_marginLeft="10dp"
             android:text="아이디"
             android:textSize="20sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center|end"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id = "@+id/frienditem_textview_comment"
+                android:text ="상태메세지"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
