@@ -29,13 +29,19 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 public class ChatFragment extends Fragment {
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
@@ -124,6 +130,11 @@ public class ChatFragment extends Fragment {
                 }
             });
 
+            //Timestamp
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            long unixTime = (long)chatModels.get(position).comments.get(lastMessageKey).timestamp;
+            Date date = new Date(unixTime);
+            customViewHolder.textView_timestamp.setText(simpleDateFormat.format(date));
         }
 
         @Override
@@ -142,8 +153,8 @@ public class ChatFragment extends Fragment {
                 super(view);
                 imageView = (ImageView) view.findViewById(R.id.chatitem_imageview);
                 textView_title = (TextView) view.findViewById(R.id.chatitem_textview_title);
-                //textView_last_message = (TextView) view.findViewById(R.id.);
-               // textView_timestamp = (TextView) view.findViewById(R.id.chatitem_textview_timestamp);
+                textView_last_message = (TextView) view.findViewById(R.id.chatitem_textview_lastMessage);
+                textView_timestamp = (TextView) view.findViewById(R.id.chatitem_textview_timestamp);
             }
         }
     }
