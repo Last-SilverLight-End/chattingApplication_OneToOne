@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
@@ -39,7 +40,9 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
@@ -53,6 +56,11 @@ public class MessageActivity extends AppCompatActivity {
     private String chatRoomUid;
     private RecyclerView recyclerView;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+
+    private UserModel destinationUserModel;
+    private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
+    int peopleCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,15 +160,48 @@ public class MessageActivity extends AppCompatActivity {
         }
 
         void getMessageList(){
-
-            FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments");
+            valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
 
                     comments.clear();
+                    Map<String,Object> readUsersMap = new HashMap<>();
                     for(DataSnapshot item : dataSnapshot.getChildren()){
-                        comments.add(item.getValue(ChatModel.Comment.class));
+                        String key = item.getKey();
+                        ChatModel.Comment comment_origin = item.getValue(ChatModel.Comment.class);
+                        ChatModel.Comment comment_modify = item.getValue(ChatModel.Comment.class);
+
+                        comment_modify.readUsers.put(uid,true);
+
+                        readUsersMap.put(key,comment_modify);
+                        comments.add(comment_origin);
+
+                        if (!comments.get(comments.size() - 1).readUsers.containsKey(uid)) {
+                            if(comments.size() == 0){
+                                return;
+                            }
+                            FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments")
+                                    .updateChildren(readUsersMap).addOnCompleteListener(task -> {
+                                        notifyDataSetChanged();
+                                        recyclerView.scrollToPosition(comments.size()-1);
+                            });
+                        }else{
+                            notifyDataSetChanged();
+                            recyclerView.scrollToPosition(comments.size()-1);
+                        }
+
                     }
+
+                    FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments")
+                            .updateChildren(readUsersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            notifyDataSetChanged();
+                            recyclerView.scrollToPosition(comments.size()-1);
+                        }
+                    });
+
                     //메세지 갱신
                     notifyDataSetChanged();
                     recyclerView.scrollToPosition(comments.size()-1);
@@ -195,6 +236,7 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
                 messageViewHolder.textview_message.setTextSize(25);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
+                setReadCounter(position,messageViewHolder.textView_readCounter_left);
                 //상대가 보낸것
             }else{
                 Glide.with(holder.itemView.getContext())
@@ -208,6 +250,7 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.textview_message.setText(comments.get(position).message);
                 messageViewHolder.textview_message.setTextSize(25);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
+                setReadCounter(position,messageViewHolder.textView_readCounter_right);
 
             }
             long unixTime= (long)comments.get(position).timestamp;
@@ -216,6 +259,44 @@ public class MessageActivity extends AppCompatActivity {
             String time = simpleDateFormat.format(date);
             messageViewHolder.textView_timestamp.setText(time);
         }
+        void setReadCounter(int position, TextView textView){
+            if(peopleCount ==0){
+
+
+                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        Map<String,Boolean> users = (Map<String, Boolean>) snapshot.getValue();
+                        peopleCount =users.size();
+                        int count = peopleCount - comments.get(position).readUsers.size();
+                       if(count>0){
+                           textView.setVisibility(View.VISIBLE);
+                           textView.setText(String.valueOf(count));
+
+                       }else{
+                           textView.setVisibility(View.INVISIBLE);
+                       }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                    }
+                });
+            }else{
+                int count = peopleCount - comments.get(position).readUsers.size();
+                if(count>0){
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(String.valueOf(count));
+
+                }else{
+                    textView.setVisibility(View.INVISIBLE);
+                }
+            }
+
+        }
+
 
         @Override
         public int getItemCount() {
@@ -229,6 +310,8 @@ public class MessageActivity extends AppCompatActivity {
             public LinearLayout linearLayout_destination;
             public LinearLayout linearLayout_main;
             public TextView textView_timestamp;
+            public TextView textView_readCounter_left;
+            public TextView textView_readCounter_right;
             public MessageViewHolder(View view) {
                 super(view);
                 textview_message = (TextView) view.findViewById(R.id.messageItem_textview_message);
@@ -237,11 +320,14 @@ public class MessageActivity extends AppCompatActivity {
                 linearLayout_destination = (LinearLayout) view.findViewById(R.id.messageItem_linearlayout_destination);
                 linearLayout_main=(LinearLayout) view.findViewById(R.id.messageItem_linearlayout_main);
                 textView_timestamp = (TextView) view.findViewById(R.id.messageItem_textview_timestamp);
+                textView_readCounter_left = (TextView) view.findViewById(R.id.messageItem_textview_readCounter_left);
+                textView_readCounter_right = (TextView) view.findViewById(R.id.messageItem_textview_readCounter_right);
             }
         }
     }
     @Override
     public void onBackPressed(){
+        databaseReference.removeEventListener(valueEventListener);
         finish();
         overridePendingTransition(R.anim.fromleft,R.anim.toright);
     }

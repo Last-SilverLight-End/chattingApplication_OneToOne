@@ -24,6 +24,8 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,12 +35,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/messageItem_textview_message"/>
-        <TextView
-            android:text = "2011.11.11 11:11"
-            android:textSize="9sp"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id = "@+id/messageItem_textview_timestamp"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/messageItem_textview_readCounter_left"
+                android:text="1"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="9sp"
+                android:layout_margin="2sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+            <TextView
+                android:textColor="@android:color/darker_gray"
+                android:text = "2011.11.11 11:11"
+                android:textSize="9sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id = "@+id/messageItem_textview_timestamp"/>
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/messageItem_textview_readCounter_right"
+                android:text="1"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="9sp"
+                android:layout_margin="2sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
     </LinearLayout>
 
 
